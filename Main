@@ -1,0 +1,158 @@
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        String line;
+
+        List<String> usernames = new ArrayList<>();
+        List<String> passwords = new ArrayList<>();
+        List<String> score = new ArrayList<>();
+
+        // Reading
+
+        try {
+            // read usernames
+            FileReader fileReader = new FileReader("usernames.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            while ((line = bufferedReader.readLine()) != null) {
+                usernames.add(line);
+            }
+
+            fileReader.close();
+
+            // read passwords
+            fileReader = new FileReader("passwords.txt");
+            bufferedReader = new BufferedReader(fileReader);
+            while ((line = bufferedReader.readLine()) != null) {
+                passwords.add(line);
+            }
+
+            fileReader.close();
+
+            // read score
+            fileReader = new FileReader("score.txt");
+            bufferedReader = new BufferedReader(fileReader);
+            while ((line = bufferedReader.readLine()) != null) {
+                score.add(line);
+            }
+
+            bufferedReader.close();
+            fileReader.close();
+        }
+        catch (FileNotFoundException e){
+            System.out.println("File not found");
+        }
+        // This just has to be here in order for the file to read and write properly
+        catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        // Logic
+
+        System.out.println(usernames);
+        System.out.println(passwords);
+        System.out.println(score);
+
+        while (true) {
+
+            System.out.println("Enter L to login, and R to register (Input X to exit) ");
+            String choice = input.nextLine();
+            if (choice.equals("L")) {
+                while (true) {
+                    System.out.println("Enter username");
+                    String username = input.nextLine();
+                    System.out.println("Enter password");
+                    String password = input.nextLine();
+                    if (usernames.contains(username)) {
+                        int index = usernames.indexOf(username);
+                        if (passwords.get(index).equals(password)) {
+                            System.out.println("Login successful");
+
+                            System.out.println("Big dubs");
+
+                            break;
+                        } else {
+                            System.out.println("Login failed");
+                            System.out.print("Try again? (y/n) ");
+                            choice = input.nextLine();
+                            if (choice.equals("y")) {
+
+                            } else if (choice.equals("n")) {
+                                break;
+                            }
+                        }
+                    } else {
+                        System.out.println("Login failed");
+                        System.out.print("Try again? (y/n) ");
+                        choice = input.nextLine();
+                        if (choice.equals("y")) {
+
+                        } else if (choice.equals("n")) {
+                            break;
+                        }
+                    }
+                }
+            } else if (choice.equals("R")) {
+                System.out.println("Enter username");
+                String username = input.nextLine();
+                System.out.println("Enter password");
+                String password = input.nextLine();
+
+                usernames.add(username);
+                passwords.add(password);
+            } else if (choice.equals("X")) {
+                break;
+            }
+
+        }
+
+        // Writing
+
+        try {
+            // write usernames
+            FileWriter fileWriter = new FileWriter("usernames.txt");
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            for (String item : usernames) {
+                bufferedWriter.write(item);
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.close();
+
+            // write passwords
+            fileWriter = new FileWriter("passwords.txt");
+            bufferedWriter = new BufferedWriter(fileWriter);
+            for (String item : passwords) {
+                bufferedWriter.write(item);
+                bufferedWriter.newLine();
+            }
+
+            bufferedWriter.close();
+
+            // write score
+            fileWriter = new FileWriter("score.txt");
+            bufferedWriter = new BufferedWriter(fileWriter);
+            for (String item : score) {
+                bufferedWriter.write(item);
+                bufferedWriter.newLine();
+            }
+
+            bufferedWriter.close();
+
+            bufferedWriter.close();
+            fileWriter.close();
+        }
+        catch (FileNotFoundException e){
+            System.out.println("File not found");
+        }
+        // This just has to be here in order for the file to read and write properly
+        catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}
