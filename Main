@@ -1,18 +1,27 @@
 public class Main {
-    public static void main(String[] args) {
-        int index;
+  public static void main(String[] args) {
+      int index;
 
-        // Reading
+      // Reading
 
-        FileIO.reader();
+      FileIO.reader();
 
-        // Logic
+      // Logic
 
-        index = SignIn.start();
+      Game.deck(); 
+    
+      index = SignIn.start();
+  
+      // if (index == -1) {
+      //     System.exit(0);
+      // } else {
+      //   Game.setIndex(index);
+      // }
 
-        // Writing
+      // Writing
 
-        FileIO.writer();
-
+      FileIO.writer();
+        
+      
     }
 }
