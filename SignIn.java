@@ -12,7 +12,7 @@ public class SignIn {
     public static int start() {
         while (login) {
             System.out.println("Enter L to login, and R to register (Input X to exit) ");
-            choice = input.nextLine();
+            choice = input.nextLine().toUpperCase();
             switch (choice) {
                 case "L":
                     login();
@@ -21,6 +21,8 @@ public class SignIn {
                     register();
                     break;
                 case "X":
+                    index = -1;
+                    login = false;
                     break;
             }
         }
@@ -46,7 +48,7 @@ public class SignIn {
                     System.out.println("Login failed");
                     do {
                         System.out.print("Try again? (y/n) ");
-                        choice = input.nextLine();
+                        choice = input.nextLine().toLowerCase();
                         if (choice.equals("y")) {
 
                         } else if (choice.equals("n")) {
@@ -60,7 +62,7 @@ public class SignIn {
                 System.out.println("Login failed");
                 do {
                     System.out.print("Try again? (y/n) ");
-                    choice = input.nextLine();
+                    choice = input.nextLine().toLowerCase();
                     if (choice.equals("y")) {
 
                     } else if (choice.equals("n")) {
@@ -81,6 +83,7 @@ public class SignIn {
 
         FileIO.getUsernames().add(username);
         FileIO.getPasswords().add(password);
+        FileIO.getScore().add("5");
     }
 
 }
