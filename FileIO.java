@@ -9,9 +9,11 @@ public class FileIO {
     private static List<String> passwords = new ArrayList<>();
     private static List<String> score = new ArrayList<>();
     private static String line;
+
     FileIO() {
 
     }
+
     public static void reader() {
         try {
             // read usernames
