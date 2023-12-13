@@ -8,18 +8,14 @@ public class Main {
 
         // Logic
 
-        Game.setIndex(0);
-
-        Game.startGame();
-
         index = SignIn.start();
 
-        // if (index == -1) {
-        //     System.exit(0);
-        // } else {
-        //   Game.setIndex(index);
-        // Game.startGame();
-        // }
+        if (index == -1) {
+            System.exit(0);
+        } else {
+          Game.setIndex(index);
+          Game.startGame();
+        }
 
         // Writing
 
