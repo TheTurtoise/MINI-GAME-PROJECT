@@ -2,8 +2,6 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Collections;
-import java.util.concurrent.TimeUnit;
-
 
 public class Game {
     private static Scanner Input = new Scanner(System.in);
@@ -24,25 +22,25 @@ public class Game {
     }
 
     public static void betting() {
-        
+
         System.out.println("You currently have " +  FileIO.getScore().get(index) + " points");
 
-      while (true) {
-        System.out.print("How much would you like to bet: ");
-        bet = Input.nextInt();
+        while (true) {
+            System.out.print("How much would you like to bet: ");
+            bet = Input.nextInt();
 
-        if (bet > Integer.parseInt(FileIO.getScore().get(index))) {
-            System.out.println("You don't have enough points to bet that much!");
-        } else if (bet < 0) {
-            System.out.println("That bet is negative!");
-        } else if (bet == 0) {
-            System.out.println("You can't bet nothing you silly goose! ( ͡° ͜ʖ ͡°)");
-        } else {
-            System.out.println("You have bet " + bet + " points!");
-            FileIO.getScore().set(index, String.valueOf(Integer.parseInt(FileIO.getScore().get(index)) - bet));
-            break;
+            if (bet > Integer.parseInt(FileIO.getScore().get(index))) {
+                System.out.println("You don't have enough points to bet that much!");
+            } else if (bet < 0) {
+                System.out.println("That bet is negative!");
+            } else if (bet == 0) {
+                System.out.println("You can't bet nothing you silly goose! ( ͡° ͜ʖ ͡°)");
+            } else {
+                System.out.println("You have bet " + bet + " points!");
+                FileIO.getScore().set(index, String.valueOf(Integer.parseInt(FileIO.getScore().get(index)) - bet));
+                break;
+            }
         }
-      }
     }
 
     public static void deck() {
@@ -64,13 +62,13 @@ public class Game {
     }
 
     public static void startGame() {
-      
+
         System.out.println("Welcome to our blackjack game!");
         while (true) {
             playerHand.clear();
             dealerHand.clear();
             cards.clear();
-          
+
             betting();
 
             deck();
@@ -116,11 +114,6 @@ public class Game {
 
             if (!bypassDealer) {
                 System.out.println("The dealer flips his face down card");
-                try {
-                    TimeUnit.SECONDS.sleep(2);
-                } catch (InterruptedException e) {
-                      System.err.format("IOException: %s%n", e);
-                }
                 System.out.println("The dealer's cards total a value of " + sumOfHand(dealerHand));
                 int cardNum = 1;
                 while (sumOfHand(dealerHand) < 17) {
@@ -129,41 +122,42 @@ public class Game {
                         System.out.println("The dealer draws their 1st card");
                     }
                     else if (cardNum == 2) {
-                       System.out.println("The dealer draws their 2nd card");
+                        System.out.println("The dealer draws their 2nd card");
                     }
                     else if (cardNum == 3) {
                         System.out.println("The dealer draws their 3rd card");
                     } else {
                         System.out.println("The dealer draws their " + cardNum + "th card");
                     }
-                    
+                    cardNum++;
                     System.out.println("The dealer's cards now total a value of " + sumOfHand(dealerHand));
-                  try {
-                      TimeUnit.SECONDS.sleep(2);
-                  } catch (InterruptedException e) {
-                        System.err.format("IOException: %s%n", e);
-                  }
                 }
             }
 
             score(bet);
-          
+
             System.out.println("You now have " + FileIO.getScore().get(index) + " points");
-            
+
+            if (FileIO.getScore().get(index).equals("0")) {
+                System.out.println("Wow, I guess 99% of gamblers don't quit before they win big");
+                System.out.println("But the casino pities you, and you now have 5 points");
+                FileIO.getScore().set(index, "5");
+            }
+
             System.out.println("Would you like to play again? (y/n) ");
             String choice = Input.next();
-                      
+
             while (!choice.equalsIgnoreCase("y") && !choice.equalsIgnoreCase("n")) {
                 System.out.println("Invalid selection");
                 System.out.println("Would you like to play again? (y/n) ");
                 choice = Input.next();
             }
-          
+
             if (choice.equalsIgnoreCase("y")) {
-                continue; 
+                continue;
             }
             else if (choice.equalsIgnoreCase("n")) {
-              break;
+                break;
             }
         }
     }
