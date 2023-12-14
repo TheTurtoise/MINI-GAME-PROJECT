@@ -2,15 +2,17 @@ import java.util.Scanner;
 
 public class SignIn {
     private static Scanner input = new Scanner(System.in);
-    private static boolean login = true;
+    private static boolean loginLoop = true;
+    private static boolean tryLogin = true;
     private static String choice;
     private static int index;
+
     SignIn() {
 
     }
 
     public static int start() {
-        while (login) {
+        while (loginLoop) {
             System.out.println("Enter L to login, and R to register (Input X to exit) ");
             choice = input.nextLine().toUpperCase();
             switch (choice) {
@@ -22,7 +24,7 @@ public class SignIn {
                     break;
                 case "X":
                     index = -1;
-                    login = false;
+                    loginLoop = false;
                     break;
             }
         }
@@ -30,7 +32,7 @@ public class SignIn {
     }
 
     private static void login() {
-        while (true) {
+        while (tryLogin) {
             System.out.println("Enter username");
             String username = input.nextLine();
             System.out.println("Enter password");
@@ -42,35 +44,37 @@ public class SignIn {
 
                     System.out.println("Big dubs");
 
-                    login = false;
+                    loginLoop = false;
                     break;
                 } else {
                     System.out.println("Login failed");
                     do {
                         System.out.print("Try again? (y/n) ");
                         choice = input.nextLine().toLowerCase();
-                        if (choice.equals("y")) {
+                        if (choice.equalsIgnoreCase("y")) {
 
-                        } else if (choice.equals("n")) {
+                        } else if (choice.equalsIgnoreCase("n")) {
+                            tryLogin = false;
                             break;
                         } else {
                             System.out.println("Invalid Input");
                         }
-                    } while (!choice.equals("y"));
+                    } while (!choice.equalsIgnoreCase("y") && !choice.equalsIgnoreCase("n"));
                 }
             } else {
                 System.out.println("Login failed");
                 do {
                     System.out.print("Try again? (y/n) ");
                     choice = input.nextLine().toLowerCase();
-                    if (choice.equals("y")) {
+                    if (choice.equalsIgnoreCase("y")) {
 
-                    } else if (choice.equals("n")) {
+                    } else if (choice.equalsIgnoreCase("n")) {
+                        tryLogin = false;
                         break;
                     } else {
                         System.out.println("Invalid Input");
                     }
-                } while (!choice.equals("y"));
+                } while (!choice.equalsIgnoreCase("y") && !choice.equalsIgnoreCase("n"));
             }
         }
     }
@@ -78,12 +82,16 @@ public class SignIn {
     private static void register() {
         System.out.println("Enter username");
         String username = input.nextLine();
-        System.out.println("Enter password");
-        String password = input.nextLine();
+        if (!FileIO.getUsernames().contains(username)) {
+            System.out.println("Enter password");
+            String password = input.nextLine();
 
-        FileIO.getUsernames().add(username);
-        FileIO.getPasswords().add(password);
-        FileIO.getScore().add("5");
+            FileIO.getUsernames().add(username);
+            FileIO.getPasswords().add(password);
+            FileIO.getScore().add("5");
+        } else {
+            System.out.println("This username is already taken!");
+        }
     }
 
 }
