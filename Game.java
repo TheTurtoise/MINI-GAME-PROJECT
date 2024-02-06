@@ -4,32 +4,36 @@ import java.util.Random;
 import java.util.Collections;
 
 public class Game {
-    private static Scanner Input = new Scanner(System.in);
-    private static int bet;
-    private static int index;
-    private static int sum = 0;
-    private static Random random_method = new Random();
-    private static ArrayList<Integer> cards = new ArrayList<>();
-    private static ArrayList<Integer> playerHand = new ArrayList<>();
-    private static ArrayList<Integer> dealerHand = new ArrayList<>();
+    private Scanner Input = new Scanner(System.in);
+    private int bet;
+    private ActiveAccount player;
+    private int sum = 0;
+    private Random random_method = new Random();
+    private ArrayList<Integer> cards = new ArrayList<>();
+    private ArrayList<Integer> playerHand = new ArrayList<>();
+    private ArrayList<Integer> dealerHand = new ArrayList<>();
 
     Game () {
 
     }
 
-    public static void setIndex(int newIndex) {
-        index = newIndex;
+    Game (ActiveAccount account) {
+        player = account;
     }
 
-    public static void betting() {
+    public void setActiveAccount(ActiveAccount account) {
+        player = account;
+    }
 
-        System.out.println("You currently have " +  FileIO.getScore().get(index) + " points");
+    public void betting() {
+
+        System.out.println("You currently have " +  player.getScore() + " points");
 
         while (true) {
             System.out.print("How much would you like to bet: ");
             bet = Input.nextInt();
 
-            if (bet > Integer.parseInt(FileIO.getScore().get(index))) {
+            if (bet > Integer.parseInt(player.getScore())) {
                 System.out.println("You don't have enough points to bet that much!");
             } else if (bet < 0) {
                 System.out.println("That bet is negative!");
@@ -37,13 +41,13 @@ public class Game {
                 System.out.println("You can't bet nothing you silly goose! ( ͡° ͜ʖ ͡°)");
             } else {
                 System.out.println("You have bet " + bet + " points!");
-                FileIO.getScore().set(index, String.valueOf(Integer.parseInt(FileIO.getScore().get(index)) - bet));
+                player.setScore(String.valueOf(Integer.parseInt(player.getScore()) - bet));
                 break;
             }
         }
     }
 
-    public static void deck() {
+    public void deck() {
         int value;
         for(int i = 0; i <= 3; i++) {
             for(int m = 1; m < 14; m++) {
@@ -61,7 +65,7 @@ public class Game {
         Collections.shuffle(cards);
     }
 
-    public static void startGame() {
+    public void startGame() {
 
         System.out.println("Welcome to our blackjack game!");
         while (true) {
@@ -136,12 +140,12 @@ public class Game {
 
             score(bet);
 
-            System.out.println("You now have " + FileIO.getScore().get(index) + " points");
+            System.out.println("You now have " + player.getScore() + " points");
 
-            if (FileIO.getScore().get(index).equals("0")) {
+            if (player.getScore().equals("0")) {
                 System.out.println("Wow, I guess 99% of gamblers don't quit before they win big");
                 System.out.println("But the casino pities you, and you now have 5 points");
-                FileIO.getScore().set(index, "5");
+                player.setScore("5");
             }
 
             System.out.println("Would you like to play again? (y/n) ");
@@ -162,16 +166,16 @@ public class Game {
         }
     }
 
-    public static void hit(ArrayList<Integer> person) {
+    public void hit(ArrayList<Integer> person) {
         int randCard = random_method.nextInt(cards.size());
         person.add(cards.get(randCard));
         cards.remove(randCard);
     }
 
-    public static void score(int bet) {
+    public void score(int bet) {
         if (sumOfHand(playerHand) > sumOfHand(dealerHand) && sumOfHand(playerHand) <= 21 || sumOfHand(dealerHand) > 21) {
             System.out.println("You win!");
-            FileIO.getScore().set(index, String.valueOf(Integer.parseInt(FileIO.getScore().get(index)) + bet * 2));
+            player.setScore(String.valueOf(Integer.parseInt(player.getScore()) + bet * 2));
         } else if (sumOfHand(playerHand) < sumOfHand(dealerHand) && sumOfHand(dealerHand) <= 21 || sumOfHand(playerHand) > 21) {
             System.out.println("You lose!");
         } else {
@@ -182,7 +186,7 @@ public class Game {
 
     }
 
-    public static int sumOfHand(ArrayList<Integer> hand) {
+    public int sumOfHand(ArrayList<Integer> hand) {
         // ace case in here
         sum = 0;
 
